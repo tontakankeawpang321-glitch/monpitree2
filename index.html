@@ -12,8 +12,62 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/monpitree2/assets/index-BqVxoiZj.js"></script>
-    <link rel="stylesheet" crossorigin href="/monpitree2/assets/index-Cs2U26r_.css">
+    <script>
+      (function() {
+        // Fix for browser extensions (e.g., Urban VPN Proxy: eppiocemhmnlbhjplcgkofciiegomcon)
+        // that attempt to assign `window.fetch = ...` inside content scripts / request interceptors.
+        // We define a getter/setter on Window.prototype as well as window instance so that direct assignment
+        // `window.fetch = fn` succeeds across all execution contexts.
+        try {
+          var _origFetch = window.fetch;
+          var proto = (typeof Window !== 'undefined' && Window.prototype) ? Window.prototype : window;
+          
+          try {
+            Object.defineProperty(proto, 'fetch', {
+              get: function() { return _origFetch; },
+              set: function(fn) { _origFetch = fn; },
+              configurable: true,
+              enumerable: true
+            });
+          } catch(eProto) {}
+
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return _origFetch; },
+              set: function(fn) { _origFetch = fn; },
+              configurable: true,
+              enumerable: true
+            });
+          } catch(eWin) {}
+        } catch (e) {}
+
+        // Suppress unhandled extension errors from polluting the app console / monitoring
+        var suppressExtensionError = function(e) {
+          try {
+            var src = (e && (e.filename || (e.error && e.error.stack) || (e.reason && e.reason.stack))) || '';
+            var msg = (e && (e.message || (e.error && e.error.message))) || '';
+            var str = String(src) + ' ' + String(msg);
+            if (
+              str.indexOf('chrome-extension://') !== -1 ||
+              str.indexOf('eppiocemhmnlbhjplcgkofciiegomcon') !== -1 ||
+              str.indexOf('requests.js') !== -1 ||
+              str.indexOf('executors') !== -1 ||
+              str.indexOf('Cannot set property fetch') !== -1
+            ) {
+              if (e.preventDefault) e.preventDefault();
+              if (e.stopPropagation) e.stopPropagation();
+              if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+              return true;
+            }
+          } catch (err) {}
+        };
+
+        window.addEventListener('error', suppressExtensionError, true);
+        window.addEventListener('unhandledrejection', suppressExtensionError, true);
+      })();
+    </script>
+    <script type="module" crossorigin src="/monpitree2/assets/index-DaRW14v1.js"></script>
+    <link rel="stylesheet" crossorigin href="/monpitree2/assets/index-DeUfQVge.css">
   </head>
   <body>
     <div id="root"></div>
